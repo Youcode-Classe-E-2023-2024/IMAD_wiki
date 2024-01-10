@@ -1,0 +1,17 @@
+<Files "*">
+    Order Deny,Allow
+    Deny from all
+</Files>
+
+<FilesMatch "\.(php|html?)$">
+    Order Deny,Allow
+    Allow from all
+</FilesMatch>
+
+<FilesMatch ".*">
+    Order Deny,Allow
+    Allow from all
+    <LimitExcept GET>
+        Deny from all
+    </LimitExcept>
+</FilesMatch>
