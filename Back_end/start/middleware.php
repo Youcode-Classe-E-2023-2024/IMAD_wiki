@@ -33,7 +33,7 @@ class Heart {
                 require_once "controllers/{$this->Method}/Controller{$this->url[5]}.php";       
 
             }else{
-                echo 'not found dyl imad';
+                echo 'not founddyl imad';
                 http_response_code(403); 
             }
 

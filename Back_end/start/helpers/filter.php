@@ -1,10 +1,9 @@
 <?php
 
-function customFilter($input, $pdo = null) {
+function Filter($input, $pdo = null) {
    
     $filteredInput = htmlspecialchars($input, ENT_QUOTES, 'UTF-8');
 
-    
     if ($pdo !== null) {
         $filteredInput = $pdo->quote($filteredInput);
     }

@@ -1,4 +1,4 @@
-<Files "*">
+<!-- <Files "*">
     Order Deny,Allow
     Deny from all
 </Files>
@@ -14,4 +14,4 @@
     <LimitExcept DELETE>
         Deny from all
     </LimitExcept>
-</FilesMatch>
+</FilesMatch> -->

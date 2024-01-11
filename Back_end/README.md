@@ -17,6 +17,9 @@ var fileInput = document.getElementById('image');
     };
 
     xhr.send(formData);
+
+
+    api : http://localhost/IMAD_wiki/Back_end/start/middleware.php/Ptags
   
 
 

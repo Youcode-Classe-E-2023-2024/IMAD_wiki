@@ -1,7 +1,0 @@
-<IfModule mod_rewrite.c>
-    RewriteEngine On
-    RewriteBase /
-
-    # Redirect all requests to middleware.php
-    RewriteRule ^(.*)$ middleware.php [L,QSA]
-</IfModule>

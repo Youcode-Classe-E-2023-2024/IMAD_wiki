@@ -4,7 +4,7 @@ if($_SERVER['REQUEST_METHOD'] === "GET"){
     
    
       
-$response =     $users->selectAll("notifications");
+$response =     $users->selectAll("wiki");
 
 echo json_encode($response);
 
