@@ -1,9 +1,0 @@
-# Enable mod_rewrite
-RewriteEngine On
-
-# Check if the requested file or directory does not exist
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-
-# Redirect to the "notfound.html" page
-RewriteRule ^(.*)$ /notfound.html [L]

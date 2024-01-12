@@ -120,7 +120,7 @@
         <div class="px-6 my-6">
           <button
             class="flex items-center justify-between w-full px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"
-            onclick="my_modal_1.showModal()" href="#" id="modals">
+            onclick="showcat()" href="#" id="modals">
             ADD Categorie
             <span class="ml-2" aria-hidden="true">+</span>
           </button>
@@ -158,7 +158,7 @@
         <div class="px-6 my-6">
           <button
             class="flex items-center justify-between w-full px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"
-            onclick="my_modal_2.showModal()" href="#" id="modals">
+            onclick="showtag()" href="#" id="modals">
             ADD tag
             <span class="ml-2" aria-hidden="true">+</span>
           </button>
@@ -453,8 +453,8 @@
                 <p class="mb-2 text-sm font-medium text-gray-600 dark:text-gray-400">
                   Utilisateurs
                 </p>
-                <p class="text-lg font-semibold text-gray-700 dark:text-gray-200">
-                  6389
+                <p class="userscount text-lg font-semibold text-gray-700 dark:text-gray-200">
+                  
                 </p>
               </div>
             </div>
@@ -591,7 +591,14 @@
 </body>
 <script>
   // section add
+  function showcat(){
+    document.querySelector('#my_modal_1').style.display = 'block' 
+  }
+  function showtag(){
+    document.querySelector('#my_modal_2').style.display = 'block' 
+  }
   function saveCategorie() {
+    document.querySelector('#my_modal_1').style.display = 'none' 
     console.log(document.getElementById('categorieaded').value);
     fetch('http://localhost/IMAD_wiki/Back_end/start/middleware.php/Pcategorie', {
       method: 'POST',
@@ -611,6 +618,7 @@
 
 
   function saveTag() {
+    document.querySelector('#my_modal_2').style.display = 'none' 
     console.log(document.getElementById('tagaded').value);
     fetch('http://localhost/IMAD_wiki/Back_end/start/middleware.php/Ptags', {
       method: 'POST',
@@ -819,7 +827,9 @@ function deleteTag(tagId) {
         console.log('Success:', data);
 
         // Assuming your data is an array of user objects
+        var x = 0;
         data.forEach(user => {
+          x++;
             // Generate HTML for each user
             const userHtml = `
                 <tr class="text-gray-700 dark:text-gray-400">
@@ -852,10 +862,11 @@ function deleteTag(tagId) {
                         </button>
                     </td>
                 </tr>`;
-
+                
             // Append the HTML to the users container
             document.querySelector(".userscontainer").innerHTML += userHtml;
         });
+        document.querySelector('.userscount').textContent = x;
     })
     .catch((error) => {
         console.error('Error:', error);
