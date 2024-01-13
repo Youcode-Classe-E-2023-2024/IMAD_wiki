@@ -32,6 +32,19 @@
  margin: 5px;
 
 }
+.categories-container {
+    display: flex;
+    gap: 10px; /* Adjust the gap between categories as needed */
+}
+
+.category {
+    padding: 8px;
+    border-radius: 8px;
+    background-color: #3498db; /* Set your desired background color */
+    color: #ffffff; /* Set the text color */
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add box shadow for a subtle effect */
+}
 
 .button2::before, .button2::after {
  content: '';
@@ -68,6 +81,20 @@
 .button2:active {
  filter: brightness(.8);
 }
+.tags-container {
+    display: flex;
+    gap: 10px; /* Adjust the gap between tags as needed */
+}
+
+.tag {
+    padding: 8px;
+    border-radius: 8px;
+    background-color: #e74c3c; /* Set your desired background color */
+    color: #ffffff; /* Set the text color */
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add box shadow for a subtle effect */
+}
+
 .btn {
  --color: #a833c5;
  padding: 0.5em 1.1em;
@@ -199,7 +226,7 @@
                               <p class="text-base italic text-gray-800 dark:text-gray-400">title</p>
                             </div>
                             <div class="w-full p-3 md:flex-1">
-                              <input name="description" rows="4" type="text" placeholder="title" required
+                              <input id="title" name="description" rows="4" type="text" placeholder="title" required
                                 class="block w-full px-4 py-4 leading-tight placeholder-gray-400 border rounded dark:placeholder-gray-500 dark:text-gray-400 dark:border-gray-800 dark:bg-gray-800 "></textarea>
                             </div>
                           </div>
@@ -212,7 +239,7 @@
                               <p class="text-base italic text-gray-800 dark:text-gray-400">description</p>
                             </div>
                             <div class="w-full p-3 md:flex-1">
-                              <textarea name="description" rows="4" type="text" placeholder="your text here.." required
+                              <textarea id="description" name="description" rows="4" type="text" placeholder="your text here.." required
                                 class="block w-full px-4 py-4 leading-tight placeholder-gray-400 border rounded dark:placeholder-gray-500 dark:text-gray-400 dark:border-gray-800 dark:bg-gray-800 "></textarea>
                             </div>
                           </div>
@@ -228,9 +255,51 @@
                               </label>
                             </div>
                             <div class="w-full p-3 md:flex-1">
-                              <select class="alltags" name="probleme" id="probleme" multiple >
-                                
-                              </select>
+                              <div class="tags-container" id="tags-container"></div>
+
+                              <script>
+                                var arraytag=[]
+                                  fetch('http://localhost/IMAD_wiki/Back_end/start/middleware.php/tags', {
+                                      headers: {
+                                          'Content-Type': 'application/json'
+                                      },
+                                  })
+                                      .then(response => response.json())
+                                      .then(data => {
+                                          console.log('Success:', data);
+                              
+                                          // Get the container div where you want to display the tags
+                                          const tagsContainer = document.getElementById('tags-container');
+                              
+                                          // Iterate over each tag in the data array
+                                          data.forEach(tag => {
+                                              // Create a div element for each tag
+                                              const tagElement = document.createElement('div');
+                                              tagElement.className = 'tag';
+                                              tagElement.textContent = tag.name;
+                              
+                                              // Add click event listener to the tag element
+                                              tagElement.addEventListener('click', () => handleTagClick(tag.id));
+                              
+                                              // Append the tag element to the container
+                                              tagsContainer.appendChild(tagElement);
+                                          });
+                                      })
+                                      .catch(error => {
+                                          console.error('Error:', error);
+                                      });
+                              
+                                      function handleTagClick(tagId) {
+                                        arraytag.push(tagId);
+                                        const uniqueTagsSet = new Set(arraytag);
+                                        console.log('Tag clicked with ID:', uniqueTagsSet);
+
+                                        // Convert the Set to an array before storing in localStorage
+                                        const uniqueTagsArray = Array.from(uniqueTagsSet);
+                                        localStorage.setItem("arraytag", JSON.stringify(uniqueTagsArray));
+                                    }
+
+                              </script>
                               
                             </div>
                           </div>
@@ -244,40 +313,52 @@
                                   </label>
                                 </div>
                                 <div class="w-full p-3 md:flex-1">
-                                  <select class="allcategories" name="Catégorie" id="Catégorie" multiple onchange="handleCategorySelectChange()">
-                                    <script>
-                                      function handleCategorySelectChange() {
-                                        // Get the selected options
-                                        const selectedOptions = document.querySelectorAll('.allcategories option:checked');
-                                  
-                                        // Extract and log the IDs of the selected options
-                                        const selectedIds = Array.from(selectedOptions).map(option => option.value);
-                                        console.log('Selected Category IDs:', selectedIds);
-                                      }
-                                  
-                                      fetch('http://localhost/IMAD_wiki/Back_end/start/middleware.php/Categorie', {
-                                        headers: {
-                                          'Content-Type': 'application/json'
-                                        },
-                                      })
-                                        .then(response => response.json())
-                                        .then(data => {
-                                          console.log('Success:', data);
-                                  
-                                          // Clear existing content in the select dropdown
-                                          document.querySelector(".allcategories").innerHTML = "";
-                                  
-                                          // Iterate over each category in the data array
-                                          data.forEach(category => {
-                                            // Append an option to the select dropdown for each category
-                                            document.querySelector('.allcategories').innerHTML += `<option value="${category.id}">${category.name}</option>`;
-                                          });
-                                        })
-                                        .catch(error => {
-                                          console.error('Error:', error);
-                                        });
-                                    </script>
-                                  </select>
+                                  <div class="categories-container" id="categories-container"></div>
+
+<script>
+  var arraycat = [];
+    fetch('http://localhost/IMAD_wiki/Back_end/start/middleware.php/Categorie', {
+        headers: {
+            'Content-Type': 'application/json'
+        },
+    })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Success:', data);
+
+            // Get the container div where you want to display the categories
+            const categoriesContainer = document.getElementById('categories-container');
+
+            // Iterate over each category in the data array
+            data.forEach(category => {
+                // Create a div element for each category
+                const categoryElement = document.createElement('div');
+                categoryElement.className = 'category';
+                categoryElement.textContent = category.name;
+
+                // Add click event listener to the category element
+                categoryElement.addEventListener('click', () => handleCategoryClick(category.id));
+
+                // Append the category element to the container
+                categoriesContainer.appendChild(categoryElement);
+            });
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+
+        function handleCategoryClick(categoryId) {
+    arraycat.push(categoryId);
+    const uniqueCategoriesSet = new Set(arraycat);
+    console.log('array:', uniqueCategoriesSet);
+
+    // Convert the Set to an array before storing in localStorage
+    const uniqueCategoriesArray = Array.from(uniqueCategoriesSet);
+    localStorage.setItem("arraycat", JSON.stringify(uniqueCategoriesArray));
+}
+
+</script>
+
                                   
                                 </div>
                               </div>
@@ -627,36 +708,35 @@
   <script>
     new MultiSelectTag('probleme')
     new MultiSelectTag('Catégorie')
+    function clickplproduct() {
+    // Assuming arraytag and arraycat are defined somewhere in your code
+    
+    
+
+    fetch('http://localhost/IMAD_wiki/Back_end/start/middleware.php/Pwikis', {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            "title": document.querySelector("#title").value,
+            "description": document.querySelector("#description").value,
+            "owner": 1,
+            "tags": JSON.parse(localStorage.getItem("arraytag")),
+            "categorie": JSON.parse(localStorage.getItem("arraycat"))
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        // Handle the response data here
+        console.log('Response:', data);
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+}
+
   </script>
 </body>
-<script>
-                                 
-                              
-                                  fetch('http://localhost/IMAD_wiki/Back_end/start/middleware.php/tags', {
-                                    headers: {
-                                      'Content-Type': 'application/json'
-                                    },
-                                  })
-                                    .then(response => response.json())
-                                    .then(data => {
-                                      console.log('Success:', data);
-                              
-                                      // Clear existing content in the select dropdown
-                                     
-                              
-                                      // Iterate over each category in the data array
-                                      data.forEach(tag => {
-                                        console.log(tag)
-                                        // Append an option to the select dropdown for each tag
-                                        document.querySelector('.alltags').innerHTML += `<option value="${tag.id}" onclick="clicked(${tag.id})">${tag.name}</option>`;
-                                      });
-                                    })
-                                    .catch(error => {
-                                      console.error('Error:', error);
-                                    });
-                                     function clicked(tagId) {
-                                    console.log('Tag clicked with ID:', tagId);
-                                    // Add your logic here for handling the click event
-                                  }
-                                </script>
+
 </html>
