@@ -466,70 +466,59 @@
 
   <div class="container px-6 mx-auto grid grid-cols-1 gap-5">
     <h1 class="mt-4 text-xl font-bold">Wiki™</h1>
-    <div class="flex flex-col p-5  grid grid-cols-1 gap-5 ">
-      </br>
-      <div class="grid grid-cols-1 gap-4">
-        <div class="bg-white py-6 px-6 mb-10 border  border-purple-600 rounded-lg">
-          <div class="flex items-center space-x-3">
-            <div class="overflow-hidden  mx-6  my-6  bg-slate-400">
-              <img class="rounded-full h-8 w-8" src="https://api.lorem.space/image/face?w=120&h=120&hash=bart89fe" alt="profil">
-            </div>
-            <div class="justify-center ">
-              <h1 class="font-bold text-2xl mb-2">Tailwind Rocks!</h1>
-              <div class="text-xs text-neutral-500">
-                00.00.00
-              </div>
-            </div>
-          </div>
-
-          <p class="my-3 mt-6 text-justify text-center">Lorem ipsum dolor sit amet consectetur, adipisicing
-            elit.
-            Eius eaque a ipsam aliquid omnis,
-            beatae possimus recusandae illum rem. Minima sequi voluptas repudiandae id? Quae, facere quam
-            suscipit
-            sed,
-            aperiam sapiente pariatur soluta enim perferendis illum veniam excepturi doloribus ducimus
-            voluptatibus
-            numquam officiis expedita culpa hic sequi quasi reprehenderit iste obcaecati nostrum. Consequuntur
-            aliquam,
-            assumenda architecto animi veniam dolore dolor?</p>
-            <button class="button2 ">Read
-              More...</button>
-              <button class="button1">supprimer</button>
-        </div>
-        </br>
-        </br>
-        <div class="grid grid-cols-1 gap-4">
-          <div class="bg-white p-5 mb-10 py-6 px-6 border  border-purple-600 rounded-lg">
-            <div class="flex items-center space-x-3">
-              <div class="overflow-hidden  mx-6  my-6 h-8 w-8 rounded-full bg-slate-400">
-                <img src="https://api.lorem.space/image/face?w=120&h=120&hash=bart89fe" alt="profil">
-              </div>
-              <div class="justify-center ">
-                <h1 class="font-bold text-2xl mb-2">Tailwind Rocks!</h1>
-                <div class="text-xs text-neutral-500">
-                  00.00.00
-                </div>
-              </div>
-            </div>
-
-            <p class="my-3 mt-6 text-justify text-center">Lorem ipsum dolor sit amet consectetur, adipisicing
-              elit.
-              Eius eaque a ipsam aliquid omnis,
-              beatae possimus recusandae illum rem. Minima sequi voluptas repudiandae id? Quae, facere quam
-              suscipit
-              sed,
-              aperiam sapiente pariatur soluta enim perferendis illum veniam excepturi doloribus ducimus
-              voluptatibus
-              numquam officiis expedita culpa hic sequi quasi reprehenderit iste obcaecati nostrum. Consequuntur
-              aliquam,
-              assumenda architecto animi veniam dolore dolor?</p>
-            <button class="button2 ">Read
-              More...</button>
-              <button class="button1">supprimer</button>
-          </div>
-          </br>
-          </br>
+    <div class="ownerwikis flex flex-col p-5  grid grid-cols-1 gap-5 ">
+      
+        
+        
+    </div>
       </main>
     </body>
+    <script>
+      fetch('http://localhost/IMAD_wiki/Back_end/start/middleware.php/Pwikiuser', {
+          method: "POST",
+          headers: {
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({"id": 1})
+      })
+          .then(response => response.json())
+          .then(data => {
+              console.log('Success:', data);
+              data.forEach(element => {
+                  document.querySelector(".ownerwikis").innerHTML += `
+                      <div class="grid grid-cols-1 gap-4">
+                          <div class="bg-white p-5 mb-10 py-6 px-6 border border-purple-600 rounded-lg">
+                              <div class="flex items-center space-x-3">
+                                  <div class="overflow-hidden mx-6 my-6 h-8 w-8 rounded-full bg-slate-400">
+                                      <img src="https://api.lorem.space/image/face?w=120&h=120&hash=bart89fe" alt="profil">
+                                  </div>
+                                  <div class="justify-center ">
+                                      <h1 class="font-bold text-2xl mb-2">${element.title}</h1>
+                                      <div class="text-xs text-neutral-500">
+                                          ${element.created_at}
+                                      </div>
+                                  </div>
+                              </div>
+                              <p class="my-3 mt-6 text-justify text-center">${element.description}</p>
+                              <button class="button2" onclick="readMore(${element.id})">Read More...</button>
+                              <button class="button1" onclick="deleteWiki(${element.id})">Delete</button>
+                          </div>
+                      </div>`;
+              });
+          })
+          .catch(error => {
+              console.error('Error:', error);
+          });
+      
+      function readMore(id) {
+          // Add logic for handling "Read More" button
+          console.log(`Read More button clicked for wiki with ID ${id}`);
+      }
+      
+      function deleteWiki(id) {
+          // Add logic for handling "Delete" button
+          console.log(`Delete button clicked for wiki with ID ${id}`);
+      }
+      </script>
+      
     </html>
