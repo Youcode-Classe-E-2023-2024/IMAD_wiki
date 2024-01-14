@@ -214,18 +214,7 @@
               <span class="ml-4">Profil</span>
             </a>
           </li>
-          <li class="relative px-6 py-3">
-            <a class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
-              href="pages/login.html">
-              <svg class="w-5 h-5" aria-hidden="true" fill="none" stroke-linecap="round" stroke-linejoin="round"
-                stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
-                <path
-                  d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6">
-                </path>
-              </svg>
-              <span class="ml-4">LOGIN</span>
-            </a>
-          </li>
+         
         </ul>
 
       </div>
@@ -424,39 +413,10 @@
             </h3>
             <img class="rounded-full" src="https://api.lorem.space/image/face?w=120&h=120&hash=bart89fe" alt="profil">
             <p class=" max-w-2xl text-sm text-gray-500">
-                user
+                ____________
             </p>
         </div>
-        <div class="border-t border-gray-200 px-4 py-5 sm:p-0">
-            <dl class="sm:divide-y sm:divide-gray-200">
-                <div class="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                    <dt class="text-sm font-medium text-gray-500">
-                        username
-                    </dt>
-                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                        John Doe
-                    </dd>
-                </div>
-                <div class="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                    <dt class="text-sm font-medium text-gray-500">
-                        Email address
-                    </dt>
-                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                        johndoe@example.com
-                    </dd>
-                </div>
-
-                <div class="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                    <dt class="text-sm font-medium text-gray-500">
-                        Address
-                    </dt>
-                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                        123 Main St<br>
-                         Anytown, USA 12345
-                    </dd>
-                </div>
-            </dl>
-        </div>
+        <div class="sectionuser border-t border-gray-200 px-4 py-5 sm:p-0"></div>
     </div>
     <div class="flex">
       <button class="button"> Button
@@ -474,6 +434,48 @@
       </main>
     </body>
     <script>
+      var userinfo = localStorage.getItem("userinfos");
+var userData = JSON.parse(userinfo);
+
+
+if (userData) {
+    var user = userData.status[0];
+
+    document.querySelector(".sectionuser").innerHTML = `
+        
+            <dl class="sm:divide-y sm:divide-gray-200">
+                <div class="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                    <dt class="text-sm font-medium text-gray-500">
+                        username
+                    </dt>
+                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                        ${user.id} <!-- Use the appropriate property here -->
+                    </dd>
+                </div>
+                <div class="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                    <dt class="text-sm font-medium text-gray-500">
+                        Email address
+                    </dt>
+                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                        ${user.email}
+                    </dd>
+                </div>
+                <div class="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                    <dt class="text-sm font-medium text-gray-500">
+                        Role
+                    </dt>
+                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                        ${user.role}
+                    </dd>
+                </div>
+                <!-- Add more sections as needed -->
+            </dl>
+        `;
+} else {
+    // Handle the case when user data is not available
+    document.querySelector(".sectionuser").innerHTML = '<p>No user data found</p>';
+}
+
       fetch('http://localhost/IMAD_wiki/Back_end/start/middleware.php/Pwikiuser', {
           method: "POST",
           headers: {
@@ -493,14 +495,15 @@
                                       <img src="https://api.lorem.space/image/face?w=120&h=120&hash=bart89fe" alt="profil">
                                   </div>
                                   <div class="justify-center ">
-                                      <h1 class="font-bold text-2xl mb-2">${element.title}</h1>
+                                    <input type="text" class="newtitle${element.id} font-bold text-2xl mb-2" placeholder="${element.title}">
                                       <div class="text-xs text-neutral-500">
                                           ${element.created_at}
                                       </div>
                                   </div>
                               </div>
-                              <p class="my-3 mt-6 text-justify text-center">${element.description}</p>
-                              <button class="button2" onclick="readMore(${element.id})">Read More...</button>
+                              <textarea class="newdescription${element.id} my-3 mt-6 text-justify text-center w-full">${element.description}</textarea>
+
+                              <button class="button" onclick="readMore(${element.id})">Modifier</button>
                               <button class="button1" onclick="deleteWiki(${element.id})">Delete</button>
                           </div>
                       </div>`;
@@ -511,13 +514,37 @@
           });
       
       function readMore(id) {
-          // Add logic for handling "Read More" button
-          console.log(`Read More button clicked for wiki with ID ${id}`);
+        fetch('http://localhost/IMAD_wiki/Back_end/start/middleware.php/Mwikis', {
+       method: 'PUT',
+       headers: {
+         'Content-Type': 'application/json'
+       },
+       body: JSON.stringify({ 'id': id , "title":document.querySelector(`.newtitle${id}`).value, "description":document.querySelector(`.newdescription${id}`).value})
+     })
+       .then(response => response.json())
+       .then(data => {
+         console.log('Success:', data);
+       })
+       .catch((error) => {
+         console.error('Error:', error);
+       });
       }
       
       function deleteWiki(id) {
-          // Add logic for handling "Delete" button
-          console.log(`Delete button clicked for wiki with ID ${id}`);
+        fetch('http://localhost/IMAD_wiki/Back_end/start/middleware.php/Dwikis', {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ 'id': id })
+    })
+      .then(response => response.json())
+      .then(data => {
+        console.log('Success:', data);
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
       }
       </script>
       

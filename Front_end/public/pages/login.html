@@ -26,23 +26,27 @@
             <h1 class="mb-4 text-xl font-semibold text-gray-700 dark:text-gray-200">
               Login
             </h1>
+            <form id="loginForm">
             <label class="block text-sm">
               <span class="text-gray-700 dark:text-gray-400">Email</span>
               <input type="email"
                 class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
-                placeholder="khawla@gmail.com" />
+                placeholder="exemple@gmail.com" name="email"/>
             </label>
             <label class="block mt-4 text-sm">
               <span class="text-gray-700 dark:text-gray-400">Password</span>
               <input
                 class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
-                placeholder="***************" type="password" />
+                placeholder="***************" name="password" type="password" />
             </label>
-            <a class="block w-full px-4 py-2 mt-4 text-sm font-medium leading-5 text-center text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"
-              href="../index.html">
-              Log in
-            </a>
+            <button type="submit">
 
+            
+            <a class="block w-full px-4 py-2 mt-4 text-sm font-medium leading-5 text-center text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"
+              >
+              Log in
+            </a></button>
+          </form>
             <hr class="my-8" />
 
             <button
@@ -80,5 +84,25 @@
     </div>
   </div>
 </body>
+<script>
+  document.getElementById('loginForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+      
+      const formData = new FormData(event.target);
+  
+      fetch('http://localhost/IMAD_wiki/Back_end/start/middleware.php/Puserslog', {
+          method: 'POST',
+          body: formData
+      })
+      .then(response => response.json()) 
+      .then(data => {
+       
+       console.log(data);
+       localStorage.setItem("userinfos",JSON.stringify(data))
 
+      })
+      
+  });
+  
+</script>
 </html>
