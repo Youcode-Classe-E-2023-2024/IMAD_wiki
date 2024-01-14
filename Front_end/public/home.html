@@ -774,6 +774,7 @@ var user = userData.status[0];
       console.log(index)
     }
     function renderwikis(data){
+      document.querySelector(".wikiscontainer").innerHTML = ""
       data.forEach((element, index) => {
   document.querySelector(".wikiscontainer").innerHTML += `
     <div class="grid grid-cols-1 gap-4 wikiyat">
