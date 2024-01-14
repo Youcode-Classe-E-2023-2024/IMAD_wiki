@@ -436,11 +436,12 @@
     <script>
       var userinfo = localStorage.getItem("userinfos");
 var userData = JSON.parse(userinfo);
-
+var user = userData.status[0];
+    localStorage.setItem("userid",user.id);
 
 if (userData) {
     var user = userData.status[0];
-
+    localStorage.setItem("userid",user.id);
     document.querySelector(".sectionuser").innerHTML = `
         
             <dl class="sm:divide-y sm:divide-gray-200">
@@ -481,7 +482,7 @@ if (userData) {
           headers: {
               'Content-Type': 'application/json'
           },
-          body: JSON.stringify({"id": 1})
+          body: JSON.stringify({"id": Number(localStorage.getItem("userid"))})
       })
           .then(response => response.json())
           .then(data => {

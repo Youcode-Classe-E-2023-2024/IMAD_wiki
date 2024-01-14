@@ -453,7 +453,7 @@
           </button>
           <!-- Search input -->
           <div class="flex justify-center flex-1 lg:mr-32">
-            <div class="relative w-full max-w-xl mr-6 focus-within:text-purple-500">
+            <div class="relative w-full max-w-xl mr-6 flex items-center  focus-within:text-purple-500">
               <div class="absolute inset-y-0 flex items-center pl-2">
                 <svg class="w-4 h-4" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20">
                   <path fill-rule="evenodd"
@@ -462,20 +462,20 @@
                 </svg>
               </div>
               <input
-                class="w-full pl-8 pr-2 text-sm text-gray-700 placeholder-gray-600 bg-gray-100 border-0 rounded-md dark:placeholder-gray-500 dark:focus:shadow-outline-gray dark:focus:placeholder-gray-600 dark:bg-gray-700 dark:text-gray-200 focus:placeholder-gray-500 focus:bg-white focus:border-purple-300 focus:outline-none focus:shadow-outline-purple form-input"
-                type="text" placeholder="Search for projects" aria-label="Search" />
+                class="searchinput w-full pl-8 pr-2 text-sm text-gray-700 placeholder-gray-600 bg-gray-100 border-0 rounded-md dark:placeholder-gray-500 dark:focus:shadow-outline-gray dark:focus:placeholder-gray-600 dark:bg-gray-700 dark:text-gray-200 focus:placeholder-gray-500 focus:bg-white focus:border-purple-300 focus:outline-none focus:shadow-outline-purple form-input"
+                type="text" placeholder="Search for wikis" aria-label="Search" />
 
             </div>
             <div>
-              <select data-te-select-init >
-                <option value="1">Tag</option>
+              <select class="filtertags" data-te-select-init>
+                <option value="1">one</option>
                 <option value="2">Two</option>
                 <option value="3">Three</option>
               </select>
             </div>
             <div>
-              <select data-te-select-init>
-                <option value="1">category</option>
+              <select class="filtercategorie" data-te-select-init>
+                <option value="1">one</option>
                 <option value="2">Two</option>
                 <option value="3">Three</option>
               </select>
@@ -515,37 +515,25 @@
                   class="absolute top-0 right-0 inline-block w-3 h-3 transform translate-x-1 -translate-y-1 bg-red-600 border-2 border-white rounded-full dark:border-gray-800"></span>
               </button>
               <template x-if="isNotificationsMenuOpen">
-                <ul x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100"
-                  x-transition:leave-end="opacity-0" @click.away="closeNotificationsMenu"
-                  @keydown.escape="closeNotificationsMenu"
-                  class="absolute right-0 w-56 p-2 mt-2 space-y-2 text-gray-600 bg-white border border-gray-100 rounded-md shadow-md dark:text-gray-300 dark:border-gray-700 dark:bg-gray-700">
-                  <li class="flex">
-                    <a class="inline-flex items-center justify-between w-full px-2 py-1 text-sm font-semibold transition-colors duration-150 rounded-md hover:bg-gray-100 hover:text-gray-800 dark:hover:bg-gray-800 dark:hover:text-gray-200"
-                      href="#">
-                      <span>Messages</span>
-                      <span
-                        class="inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-600 bg-red-100 rounded-full dark:text-red-100 dark:bg-red-600">
-                        13
-                      </span>
-                    </a>
-                  </li>
-                  <li class="flex">
-                    <a class="inline-flex items-center justify-between w-full px-2 py-1 text-sm font-semibold transition-colors duration-150 rounded-md hover:bg-gray-100 hover:text-gray-800 dark:hover:bg-gray-800 dark:hover:text-gray-200"
-                      href="#">
-                      <span>Sales</span>
-                      <span
-                        class="inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-600 bg-red-100 rounded-full dark:text-red-100 dark:bg-red-600">
-                        2
-                      </span>
-                    </a>
-                  </li>
-                  <li class="flex">
-                    <a class="inline-flex items-center justify-between w-full px-2 py-1 text-sm font-semibold transition-colors duration-150 rounded-md hover:bg-gray-100 hover:text-gray-800 dark:hover:bg-gray-800 dark:hover:text-gray-200"
-                      href="#">
-                      <span>Alerts</span>
-                    </a>
-                  </li>
-                </ul>
+                <ul x-transition:leave="transition ease-in duration-150" 
+    x-transition:leave-start="opacity-100"
+    x-transition:leave-end="opacity-0"
+    @click.away="closeNotificationsMenu"
+    @keydown.escape="closeNotificationsMenu"
+    class="notifcontainer absolute right-0 w-56 p-2 mt-2 space-y-2 text-gray-600 bg-white border border-gray-100 rounded-md shadow-md dark:text-gray-300 dark:border-gray-700 dark:bg-gray-700">
+
+    <li class="flex">
+        <a class="inline-flex items-center justify-between w-full px-2 py-1 text-sm font-semibold transition-colors duration-150 rounded-md hover:bg-gray-100 hover:text-gray-800 dark:hover:bg-gray-800 dark:hover:text-gray-200" href="#">
+            <span>
+                Wiki <span class="text-green-500">Title Green</span> added by <span class="text-red-500">User Red</span>
+            </span>
+        </a>
+    </li>
+
+    <!-- Add more list items dynamically if needed -->
+
+</ul>
+
               </template>
             </li>
             <!-- Profile menu -->
@@ -622,33 +610,165 @@
 
   <script src="https://cdn.jsdelivr.net/gh/habibmhamadi/multi-select-tag@2.0.1/dist/js/multi-select-tag.js"></script>
   <script>
+   
+   fetch('http://localhost/IMAD_wiki/Back_end/start/middleware.php/Notif', {
+    headers: {
+        'Content-Type': 'application/json'
+    },
+})
+    .then(response => response.json())
+    .then(data => {
+        console.log('Success:', data);
+
+        const notif = document.querySelector(".notifcontainer");
+
+        // Clear existing content
+        notif.innerHTML = '';
+
+        // Append new content based on data
+        data.forEach(notification => {
+          
+            notif.innerHTML += `<li class="flex">
+                <a class="inline-flex items-center justify-between w-full px-2 py-1 text-sm font-semibold transition-colors duration-150 rounded-md hover:bg-gray-100 hover:text-gray-800 dark:hover:bg-gray-800 dark:hover:text-gray-200" href="#">
+                    <span>
+                        Wiki <span class="text-green-500">${notification.title}</span> added by <span class="text-red-500">${notification.email}</span>
+                    </span>
+                </a>
+            </li>`;
+        });
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+    });
+
+    document.querySelector(".searchinput").addEventListener("input", (e) => {
+    const searchValue = e.target.value.toLowerCase(); // Convert input value to lowercase for case-insensitive comparison
+
+    document.querySelectorAll(".wikiyat").forEach((wiki) => {
+        const wikiTitle = wiki.querySelector(".wiki-title").innerText.toLowerCase(); // Assuming there's a class "wiki-title" for the title
+
+        if (wikiTitle.includes(searchValue)) {
+            wiki.style.display = "block"; // Show the wiki
+        } else {
+            wiki.style.display = "none"; // Hide the wiki
+        }
+    });
+});
+
+    // Function to handle tag selection
+function tagChoosed() {
+    const filterTagsSelect = document.querySelector(".filtertags");
+    const selectedTagValue = filterTagsSelect.value;
+    console.log('Selected Tag:', selectedTagValue);
+    fetch('http://localhost/IMAD_wiki/Back_end/start/middleware.php/Pwikiselect', {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            "tagid":selectedTagValue,
+            "option":"tag"
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        // Handle the response data here
+        console.log('Response:', data);
+        renderwikis(data)
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+}
+
+// Function to handle category selection
+function categorieChoosed() {
+    const filterCategorieSelect = document.querySelector(".filtercategorie");
+    const selectedCategorieValue = filterCategorieSelect.value;
+    console.log('Selected Categorie:', selectedCategorieValue);
+    fetch('http://localhost/IMAD_wiki/Back_end/start/middleware.php/Pwikiselect', {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            "categorieid":selectedCategorieValue,
+            "option":"cat"
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        // Handle the response data here
+        console.log('Response:', data);
+        renderwikis(data)
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+
+}
+
+// Attach event listeners to the select elements
+document.querySelector(".filtertags").addEventListener("change", tagChoosed);
+document.querySelector(".filtercategorie").addEventListener("change", categorieChoosed);
+
+    fetch('http://localhost/IMAD_wiki/Back_end/start/middleware.php/Categorie', {
+    headers: {
+        'Content-Type': 'application/json'
+    },
+})
+    .then(response => response.json())
+    .then(data => {
+        console.log('Success:', data);
+
+        const filterTagsSelect = document.querySelector(".filtercategorie");
+
+        // Clear existing options
+        filterTagsSelect.innerHTML = '';
+
+        // Append new options based on data
+        data.forEach(tag => {
+            filterTagsSelect.innerHTML += `<option value="${tag.id}">${tag.name}</option>`;
+        });
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+    });
+    fetch('http://localhost/IMAD_wiki/Back_end/start/middleware.php/Tags', {
+    headers: {
+        'Content-Type': 'application/json'
+    },
+})
+    .then(response => response.json())
+    .then(data => {
+        console.log('Success:', data);
+
+        const filterTagsSelect = document.querySelector(".filtertags");
+
+        // Clear existing options
+        filterTagsSelect.innerHTML = '';
+
+        // Append new options based on data
+        data.forEach(tag => {
+            filterTagsSelect.innerHTML += `<option value="${tag.id}">${tag.name}</option>`;
+        });
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+    });
+
+
+       var userinfo = localStorage.getItem("userinfos");
+var userData = JSON.parse(userinfo);
+var user = userData.status[0];
+    localStorage.setItem("userid",user.id);
     fetch('http://localhost/IMAD_wiki/Back_end/start/middleware.php/wikis')
     .then(response => response.json())
     .then(data => {
         // Handle the response data here
         console.log('Response:', data);
-        data.forEach((element,index) => {
-            document.querySelector(".wikiscontainer").innerHTML += `<div class="grid grid-cols-1 gap-4">
-                  <div class="bg-white p-5 mb-10 py-6 px-6 border  border-purple-600 rounded-lg">
-                    <div class="flex items-center space-x-3">
-                      <div class="overflow-hidden  mx-6  my-6 h-8 w-8 rounded-full bg-slate-400">
-                        <img src="https://api.lorem.space/image/face?w=120&h=120&hash=bart89fe" alt="profil">
-                      </div>
-                      <div class="justify-center ">
-                        <h1 class="font-bold text-2xl mb-2">${element.title}</h1>
-                        <div class="text-xs text-neutral-500">
-                          ${element.created_at}
-                        </div>
-                      </div>
-                    </div>
+        renderwikis(data);
 
-                    <p class="my-3 mt-6 text-justify text-center">${element.description}</p>
-                      <button onclick="showdetails(${index})" class="button2 ">Read
-                        More...</button>
-                  </div>
-                  </br>
-                </div>`;
-        });
 
     })
     .catch(error => {
@@ -657,7 +777,33 @@
     function showdetails(index){
       console.log(index)
     }
+    function renderwikis(data){
+      data.forEach((element, index) => {
+  document.querySelector(".wikiscontainer").innerHTML += `
+    <div class="grid grid-cols-1 gap-4 wikiyat">
+      <div class="bg-white p-5 mb-10 py-6 px-6 border border-purple-600 my-5 rounded-lg">
+        <div class="flex items-center space-x-3">
+          <div class="overflow-hidden mx-6 my-6 h-8 w-8 rounded-full bg-slate-400">
+            <img src="https://api.lorem.space/image/face?w=120&h=120&hash=bart89fe" alt="profil">
+          </div>
+          <div class="justify-center">
+            <h1 class="wiki-title font-bold text-2xl mb-2">${element.title}</h1>
+            <div class="text-xs text-neutral-500">
+              ${element.created_at}
+            </div>
+          </div>
+        </div>
 
+        <p class="my-3 mt-6 text-justify text-center">${element.description}</p>
+
+        
+
+        <button onclick="showdetails(${index})" class="button2 mt-4">Read More...</button>
+      </div>
+    </div>
+  `;
+});
+    }
     new MultiSelectTag('probleme')
     new MultiSelectTag('Catégorie')
     function clickplproduct() {
@@ -673,7 +819,7 @@
         body: JSON.stringify({
             "title": document.querySelector("#title").value,
             "description": document.querySelector("#description").value,
-            "owner": 1,
+            "owner": Number(localStorage.getItem("userid")),
             "tags": JSON.parse(localStorage.getItem("arraytag")),
             "categorie": JSON.parse(localStorage.getItem("arraycat"))
         })

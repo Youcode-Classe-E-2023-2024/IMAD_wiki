@@ -71,7 +71,20 @@ class DatabaseSingleton
         
         return $result;
     }
-
+    public function special($query) {
+        try {
+            $pdo = $this->getPdo();
+            $statement = $pdo->prepare($query); // Use the provided query parameter
+            $statement->execute();
+            $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+           
+            return $result;
+        } catch (Exception $e) {
+            echo "Error: " . $e->getMessage() . "\n";
+            return [];
+        }
+    }
+    
     public function selectWhere($VALUES = '*',$table, $where) {
         try {
             
