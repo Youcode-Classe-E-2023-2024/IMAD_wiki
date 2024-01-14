@@ -448,10 +448,10 @@
               </div>
               <div>
                 <p class="mb-2 text-sm font-medium text-gray-600 dark:text-gray-400">
-                  Post
+                  Wiki™
                 </p>
-                <p class="text-lg font-semibold text-gray-700 dark:text-gray-200">
-                  $ 46,760.89
+                <p class="wikicount text-lg font-semibold text-gray-700 dark:text-gray-200">
+                  99+
                 </p>
               </div>
 
@@ -466,10 +466,10 @@
               </div>
               <div>
                 <p class="mb-2 text-sm font-medium text-gray-600 dark:text-gray-400">
-                  New sales
+                  Tags
                 </p>
-                <p class="text-lg font-semibold text-gray-700 dark:text-gray-200">
-                  376
+                <p class="userstags text-lg font-semibold text-gray-700 dark:text-gray-200">
+                  
                 </p>
               </div>
             </div>
@@ -484,10 +484,10 @@
               </div>
               <div>
                 <p class="mb-2 text-sm font-medium text-gray-600 dark:text-gray-400">
-                  Pending contacts
+                  Categories
                 </p>
-                <p class="text-lg font-semibold text-gray-700 dark:text-gray-200">
-                  35
+                <p class="categoriecount text-lg font-semibold text-gray-700 dark:text-gray-200">
+                  
                 </p>
               </div>
             </div>
@@ -617,9 +617,9 @@
 
         // Clear existing content in the categoriecontainer
         document.querySelector(".categoriecontainer").innerHTML = "";
-
+        var l = 0
         // Iterate over each category in the data array
-        data.forEach(category => {
+        data.forEach(category => {l++
             // Generate HTML for each category
             const categoryHtml = `
                 <tr class="text-gray-700 dark:text-gray-400">
@@ -652,6 +652,7 @@
           
             document.querySelector(".categoriecontainer").innerHTML += categoryHtml;
         });
+        document.querySelector('.categoriecount').textContent = l;
     })
     .catch((error) => {
         console.error('Error:', error);
@@ -705,9 +706,9 @@ fetch('http://localhost/IMAD_wiki/Back_end/start/middleware.php/Tags', {
 
         // Clear existing content in the tagcontainer
         document.querySelector(".tagcontainer").innerHTML = "";
-
+        var t = 0
         // Iterate over each tag in the data array
-        data.forEach(tag => {
+        data.forEach(tag => {t++;
             // Generate HTML for each tag
             const tagHtml = `
                 <tr class="text-gray-700 dark:text-gray-400">
@@ -741,6 +742,7 @@ fetch('http://localhost/IMAD_wiki/Back_end/start/middleware.php/Tags', {
 
             document.querySelector(".tagcontainer").innerHTML += tagHtml;
         });
+        document.querySelector('.userstags').textContent = t;
     })
     .catch((error) => {
         console.error('Error:', error);

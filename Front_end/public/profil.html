@@ -13,6 +13,7 @@
 
   <script src="assets/js/init-alpine.js"></script>
 <style>
+  
   .button {
  --color: #00A97F;
  padding: 0.8em 1.7em;
@@ -407,6 +408,31 @@
       <main class="h-full pb-16  flex flex-col items-center">
         </br>
       <div class="bg-white h-max w-full shadow rounded-lg border">
+        <input type="file" id="image">
+
+<script>
+    var fileInput = document.getElementById('image');
+
+    fileInput.addEventListener('change', function () {
+        var file = fileInput.files[0];
+        var formData = new FormData();
+        formData.append('file', file);
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', 'http://localhost/IMAD_wiki/Back_end/start/middlewarephotos.php', true);
+
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                // Handle the response from the server
+                console.log(xhr.responseText);
+            } else {
+                console.error('Error during file upload. Status:', xhr.status);
+            }
+        };
+
+        xhr.send(formData);
+    });
+</script>
         <div class="px-4 py-5">
             <h3 class="  text-center text-lg leading-6 font-medium text-gray-900">
                 User Profile
@@ -425,7 +451,7 @@
   </div>
 
   <div class="container px-6 mx-auto grid grid-cols-1 gap-5">
-    <h1 class="mt-4 text-xl font-bold">Wiki™</h1>
+    <h1 class="mt-4 text-xl font-bold">Your Wikis</h1>
     <div class="ownerwikis flex flex-col p-5  grid grid-cols-1 gap-5 ">
       
         
