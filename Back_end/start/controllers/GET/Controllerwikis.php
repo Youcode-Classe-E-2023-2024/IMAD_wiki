@@ -4,7 +4,7 @@ if($_SERVER['REQUEST_METHOD'] === "GET"){
     
    
       
-$response =     $users->selectAll("wiki");
+$response =     $users->selectWhere('*','wiki',"status IS NULL");
 
 echo json_encode($response);
 
